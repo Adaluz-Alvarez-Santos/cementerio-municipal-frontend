@@ -1,0 +1,27 @@
+
+.sidebar {
+  width: 180px;
+  background-color: #4448A7;
+  color: white;
+  height: 100%;
+  
+}
+
+
+
+/* Estilo para los enlaces del sidebar */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
+

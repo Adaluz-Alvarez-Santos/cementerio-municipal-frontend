@@ -1,0 +1,33 @@
+.cemetery-map-container {
+    position: relative;
+  }
+  
+  .map-image {
+    width: 100%; /* Ajusta la imagen según el contenedor */
+    height: auto;
+  }
+  
+  .bloque {
+    position: absolute;
+    width: 30px; /* Ajusta el tamaño de los bloques según tu necesidad */
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+  }
+  
+  .bloque.libre {
+    background-color: green; /* Color para los bloques libres */
+  }
+  
+  .bloque.ocupado {
+    background-color: red; /* Color para los bloques ocupados */
+  }
+
+ 
+  

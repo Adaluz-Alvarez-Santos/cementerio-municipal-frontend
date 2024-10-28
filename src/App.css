@@ -1,0 +1,79 @@
+
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content-wrapper {
+  display: flex;
+  flex: 1; 
+  height: 100%;
+}
+
+.main-content {
+  width: 100%;
+  padding: 20px;
+  flex: 1;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #E8E2E2;
+}
+
+.titulo-inh{
+  background-color: #7572F8;
+  height: 35px;
+  color: aliceblue;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.titulo-span{
+  border-bottom: 2px solid #ACA7A7;
+  color: #807474;
+  font-weight: bold;
+  display: flex;
+  margin: 5px;
+}
+
+.contenido{
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  padding: 3px;
+}
+
+.form-label{
+  white-space: nowrap;
+  padding-right: 5px;
+}
+
+.boton-form{
+  margin-right: 15px;
+  margin-bottom: 7px
+}
+
+.cont{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.table{
+  background-color: black;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color:#7572F8;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
