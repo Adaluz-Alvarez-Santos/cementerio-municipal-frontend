@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import submitInhumacion from "../../api/EnviarInhumacion";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import "../../App.css";
 
 const Inhumacion = () => {
-  const [selectedOption, setSelectedOption] = useState("Municipal");
+  const { bloque, fila, columna, espacioId } = useParams();
   const [formData, setFormData] = useState({
     fecha_entrada: "",
     fecha_comprobante: "",
@@ -27,7 +29,14 @@ const Inhumacion = () => {
         celular: "",
       },
     ],
+    espacio_id: null,
   });
+
+  useEffect(() => {
+    if (espacioId) {
+        setFormData(prevData => ({ ...prevData, espacio_id: espacioId }));
+    }
+}, [espacioId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,17 +75,14 @@ const Inhumacion = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     submitInhumacion(formData)
-
       .then((data) => {
         console.log("Inhumación creada:", data);
         // Reset form or handle success
-
       })
       .catch((error) => {
         console.error("Error al crear la inhumación:", error);
         // Handle error
       });
-      
   };
 
   return (
@@ -84,8 +90,25 @@ const Inhumacion = () => {
       <span className="titulo-inh p-2 d-flex">Inhumacion</span>
 
       <form onSubmit={handleSubmit} className="contenido p-3">
+      <span className="titulo-span">Ubicación</span>
+      <div className="row g-1 cont">
+          <div className="col d-flex">
+            <label htmlFor="" className="form-label">Bloque</label>
+            <input type="text" value={bloque} className="bg-primary-subtle" readOnly />
+          </div>
+          <div className="col d-flex">
+            <label htmlFor="" className="form-label">Fila</label>
+            <input type="text" value={fila} className="bg-primary-subtle" readOnly />
+          </div>
+          <div className="col d-flex">
+            <label htmlFor="" className="form-label">Columna</label>
+            <input type="text" value={columna} className="bg-primary-subtle" readOnly />
+          </div>
+        </div>
+
         <div>
-          <div className=" row g-1 cont p-2">
+        <span className="titulo-span">Datos de entrada</span>
+          <div className=" row g-1 cont ">
             <div className="col d-flex">
               <label htmlFor="fecha_ent" className="form-label">
                 Fecha de entrada
@@ -301,7 +324,7 @@ const Inhumacion = () => {
             </div>
             <div className="col-md-6 d-flex">
               <label htmlFor="celular" className="form-label">
-                telefono/celular
+                Telefono/Celular
               </label>
               <input
                 type="text"

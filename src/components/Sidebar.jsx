@@ -16,13 +16,7 @@ function Sidebar() {
           <li>
             <i className="bi bi-tree-fill"></i>
             <Link className="fs-6" to="bloques">
-              Bloques
-            </Link>
-          </li>
-          <li>
-            <i class="bi bi-tree-fill"></i>
-            <Link className="fs-6" to="/inhumacion">
-              Inhumacion
+              Gestion de Bloques y Registro
             </Link>
           </li>
           <li>

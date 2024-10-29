@@ -24,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Inicio />} />
               <Route path="/inhumacion" element={<Inhumacion />} />
+              <Route path="/inhumacion/:bloque/:fila/:columna/:espacioId" element={<Inhumacion />} />
               <Route path="/tablaInhumacion" element={<InhumacionesTable />} />
               <Route path="/extender/:id" element={<ExtenderInhumacion />} />
               <Route path="/exhumar/:id" element={<ExhumarForm />} />
