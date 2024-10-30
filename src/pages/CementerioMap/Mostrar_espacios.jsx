@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   obtenerBloquesConDetalles,
-  cambiarEstadoEspacio,
 } from "../../api/BloquesService";
 import CrearBloqueForm from "./CrearBloque_Form";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +10,7 @@ const BloquesComponent = () => {
   const [bloques, setBloques] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeSpaceId, setActiveSpaceId] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,10 +30,19 @@ const BloquesComponent = () => {
     }
   };
 
+  const handleVerHistorial = () => {
+    navigate(`/espacio/${espacio.id}/historial`);
+  };
+
   const redirigirAInhumacionForm = (bloque, fila, columna, espacioId) => {
     navigate(
       `/inhumacion/${bloque.nombre}/${fila.numero}/${columna.numero}/${espacioId}`
     );
+  };
+
+  const handleSpaceClick = (espacio) => {
+    // Si el espacio clickeado es el mismo que el activo, lo cerramos; de lo contrario, abrimos el nuevo
+    setActiveSpaceId((prevId) => (prevId === espacio.id ? null : espacio.id));
   };
 
   return (
@@ -72,44 +81,75 @@ const BloquesComponent = () => {
                             <div className="row">
                               {fila.columnas.map((columna) => (
                                 <div key={columna.id} className="col">
-                                  <span>col {columna.numero}</span>
+                                  <span>Col {columna.numero}</span>
                                   <div className="d-flex justify-content-center">
                                     {columna.espacios.map((espacio) => (
-                                      <span
+                                      <div
                                         key={`${fila.id}-${columna.id}-${espacio.id}`} // Asegúrate de que la clave sea única
-                                        className={`badge me-1 ${
-                                          espacio.estado === "ocupado"
-                                            ? "bg-danger"
-                                            : "bg-success"
-                                        }`}
-                                        style={{
-                                          cursor:
-                                            espacio.estado === "ocupado"
-                                              ? "not-allowed"
-                                              : "pointer",
-                                          fontSize: "0.8rem",
-                                          width: "1.8rem",
-                                          height: "1.8rem",
-                                          display: "inline-flex",
-                                          alignItems: "center",
-                                          justifyContent: "center",
-                                        }}
-                                        onClick={() => {
-                                          if (espacio.estado === "disponible") {
-                                            redirigirAInhumacionForm(
-                                              bloque,
-                                              fila,
-                                              columna,
-                                              espacio.id
-                                            );
-                                          } else {
-                                            alert("Este espacio está ocupado.");
-                                          }
-                                        }}
+                                        className="position-relative"
                                       >
-                                        {fila.numero},{columna.numero}
-                                        
-                                      </span>
+                                        <span
+                                          className={`badge me-1 ${
+                                            espacio.estado === "ocupado"
+                                              ? "bg-danger"
+                                              : "bg-success"
+                                          }`}
+                                          style={{
+                                            cursor:
+                                              espacio.estado === "ocupado"
+                                                ? "not-allowed"
+                                                : "pointer",
+                                            fontSize: "0.8rem",
+                                            width: "1.8rem",
+                                            height: "1.8rem",
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                          }}
+                                          onClick={() =>
+                                            handleSpaceClick(espacio)
+                                          }
+                                        >
+                                          {fila.numero},{columna.numero}
+                                        </span>
+
+                                        {/* Botones de Opciones */}
+                                        {activeSpaceId === espacio.id && (
+                                          <div
+                                            className="d-flex flex-column position-absolute"
+                                            style={{
+                                              top: "2rem",
+                                              left: "0",
+                                              zIndex: "1",
+                                            }}
+                                          >
+                                            {espacio.estado ===
+                                              "disponible" && (
+                                              <button
+                                                className="btn btn-primary btn-sm  mb-1"
+                                                onClick={() =>
+                                                  redirigirAInhumacionForm(
+                                                    bloque,
+                                                    fila,
+                                                    columna,
+                                                    espacio.id
+                                                  )
+                                                }
+                                              >
+                                                Registrar Inhumación
+                                              </button>
+                                            )}
+                                            <button
+                                              className="btn btn-danger btn-sm "
+                                              onClick={() =>
+                                                redirigirAHistorial(espacio.id)
+                                              }
+                                            >
+                                              Ver Historial
+                                            </button>
+                                          </div>
+                                        )}
+                                      </div>
                                     ))}
                                   </div>
                                 </div>
