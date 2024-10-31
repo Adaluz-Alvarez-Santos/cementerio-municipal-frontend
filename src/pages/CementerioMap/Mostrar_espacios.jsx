@@ -40,9 +40,24 @@ const BloquesComponent = () => {
     );
   };
 
-  const redirigirAExhumacion = (inhumacionId, espacioId) => {
+  const redirigirAExhumacion = (
+    bloque,
+    fila,
+    columna,
+    inhumacionId,
+    espacioId
+  ) => {
+    console.log(
+      bloque.nombre,
+      fila.numero,
+      columna.numero,
+      inhumacionId,
+      espacioId
+    );
     // Redirigir a la página de exhumación
-    navigate(`/exhumar/${espacioId}/${inhumacionId}`);
+    navigate(
+      `/exhumar/${bloque.nombre}/${fila.numero}/${columna.numero}/${espacioId}/${inhumacionId}`
+    );
   };
 
   const handleSpaceClick = (espacio) => {
@@ -90,7 +105,7 @@ const BloquesComponent = () => {
                                   <div className="d-flex justify-content-center">
                                     {columna.espacios.map((espacio) => (
                                       <div
-                                        key={`${fila.id}-${columna.id}-${espacio.id}`} // Asegúrate de que la clave sea única
+                                        key={`${fila.id}-${columna.id}-${espacio.id}`}
                                         className="position-relative"
                                       >
                                         <span
@@ -100,7 +115,7 @@ const BloquesComponent = () => {
                                               : "bg-success"
                                           }`}
                                           style={{
-                                            cursor:"pointer",
+                                            cursor: "pointer",
                                             fontSize: "0.8rem",
                                             width: "1.8rem",
                                             height: "1.8rem",
@@ -111,8 +126,6 @@ const BloquesComponent = () => {
                                           onClick={() =>
                                             handleSpaceClick(espacio)
                                           }
-
-                                          
                                         >
                                           {fila.numero},{columna.numero}
                                         </span>
@@ -130,7 +143,7 @@ const BloquesComponent = () => {
                                             {espacio.estado ===
                                               "disponible" && (
                                               <button
-                                                className="btn btn-primary btn-sm  mb-1"
+                                                className="btn btn-primary btn-sm mb-1"
                                                 onClick={() =>
                                                   redirigirAInhumacionForm(
                                                     bloque,
@@ -144,24 +157,26 @@ const BloquesComponent = () => {
                                               </button>
                                             )}
 
-                                            {espacio.estado === "ocupado" && (
-                                             
-                                                                              
+                                            {espacio.estado === "ocupado" &&
+                                              espacio.inhumaciones && (
                                                 <button
                                                   className="btn btn-warning btn-sm mb-1"
                                                   onClick={() =>
-                                                    redirigirAExhumacion(                                                     
-                                                      espacio.id
+                                                    redirigirAExhumacion(
+                                                      bloque,
+                                                      fila,
+                                                      columna,
+                                                      espacio.id,
+                                                      espacio.inhumaciones[0].id // Accede al primer inhumacion.id
                                                     )
                                                   }
                                                 >
                                                   Registrar Exhumación
                                                 </button>
-                                              
-                                            )}
+                                              )}
 
                                             <button
-                                              className="btn btn-danger btn-sm "
+                                              className="btn btn-danger btn-sm"
                                               onClick={() =>
                                                 redirigirAHistorial(
                                                   bloque,

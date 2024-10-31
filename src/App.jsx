@@ -30,6 +30,7 @@ function App() {
               <Route path="/tablaInhumacion" element={<InhumacionesTable />} />
               <Route path="/extender/:id" element={<ExtenderInhumacion />} />
               <Route path="/exhumar/:id" element={<ExhumarForm />} />
+              <Route path="/exhumar/:bloque/:fila/:columna/:espacioId/:inhumacionId" element={<ExhumarForm />} />
               <Route path="/perpetuidad/:id" element={<PerpetuidadForm />} />
               <Route path="/tablaExhumacion" element={<ExhumacionesTable />} />
               <Route path="/bloques" element={<BloquesList/>}/>
