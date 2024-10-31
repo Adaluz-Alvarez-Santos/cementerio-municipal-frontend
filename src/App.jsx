@@ -11,6 +11,7 @@ import ExhumarForm from "./pages/Exhumacion/Exhumar_Form";
 import PerpetuidadForm from "./pages/Perpetuidad/PerpetuidadForm";
 import ExhumacionesTable from "./pages/Exhumacion/Exhumar_tabla";
 import BloquesList from "./pages/CementerioMap/Mostrar_espacios";
+import HistorialInhumaciones from "./pages/CementerioMap/Historial_Espacios";
 import "./App.css";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
               <Route path="/" element={<Inicio />} />
               <Route path="/inhumacion" element={<Inhumacion />} />
               <Route path="/inhumacion/:bloque/:fila/:columna/:espacioId" element={<Inhumacion />} />
+              <Route path="/espacio/:bloque/:fila/:columna/:espacioId/:historial" element={<HistorialInhumaciones />} />
               <Route path="/tablaInhumacion" element={<InhumacionesTable />} />
               <Route path="/extender/:id" element={<ExtenderInhumacion />} />
               <Route path="/exhumar/:id" element={<ExhumarForm />} />

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  obtenerBloquesConDetalles,
-} from "../../api/BloquesService";
+import { obtenerBloquesConDetalles } from "../../api/BloquesService";
 import CrearBloqueForm from "./CrearBloque_Form";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
@@ -10,7 +8,7 @@ const BloquesComponent = () => {
   const [bloques, setBloques] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activeSpaceId, setActiveSpaceId] = useState(null); 
+  const [activeSpaceId, setActiveSpaceId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,14 +28,21 @@ const BloquesComponent = () => {
     }
   };
 
-  const handleVerHistorial = () => {
-    navigate(`/espacio/${espacio.id}/historial`);
+  const redirigirAHistorial = (bloque, fila, columna, espacioId) => {
+    navigate(
+      `/espacio/${bloque.nombre}/${fila.numero}/${columna.numero}/${espacioId}/historial`
+    );
   };
 
   const redirigirAInhumacionForm = (bloque, fila, columna, espacioId) => {
     navigate(
       `/inhumacion/${bloque.nombre}/${fila.numero}/${columna.numero}/${espacioId}`
     );
+  };
+
+  const redirigirAExhumacion = (inhumacionId, espacioId) => {
+    // Redirigir a la página de exhumación
+    navigate(`/exhumar/${espacioId}/${inhumacionId}`);
   };
 
   const handleSpaceClick = (espacio) => {
@@ -95,10 +100,7 @@ const BloquesComponent = () => {
                                               : "bg-success"
                                           }`}
                                           style={{
-                                            cursor:
-                                              espacio.estado === "ocupado"
-                                                ? "not-allowed"
-                                                : "pointer",
+                                            cursor:"pointer",
                                             fontSize: "0.8rem",
                                             width: "1.8rem",
                                             height: "1.8rem",
@@ -109,6 +111,8 @@ const BloquesComponent = () => {
                                           onClick={() =>
                                             handleSpaceClick(espacio)
                                           }
+
+                                          
                                         >
                                           {fila.numero},{columna.numero}
                                         </span>
@@ -139,10 +143,32 @@ const BloquesComponent = () => {
                                                 Registrar Inhumación
                                               </button>
                                             )}
+
+                                            {espacio.estado === "ocupado" && (
+                                             
+                                                                              
+                                                <button
+                                                  className="btn btn-warning btn-sm mb-1"
+                                                  onClick={() =>
+                                                    redirigirAExhumacion(                                                     
+                                                      espacio.id
+                                                    )
+                                                  }
+                                                >
+                                                  Registrar Exhumación
+                                                </button>
+                                              
+                                            )}
+
                                             <button
                                               className="btn btn-danger btn-sm "
                                               onClick={() =>
-                                                redirigirAHistorial(espacio.id)
+                                                redirigirAHistorial(
+                                                  bloque,
+                                                  fila,
+                                                  columna,
+                                                  espacio.id
+                                                )
                                               }
                                             >
                                               Ver Historial

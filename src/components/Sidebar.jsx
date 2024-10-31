@@ -19,7 +19,7 @@ function Sidebar() {
               Gestion de Bloques y Registro
             </Link>
           </li>
-          <li>
+          {/*<li>
             <i class="bi bi-tree-fill"></i>
             <Link className="fs-6" to="tablaInhumacion">
               Tabla de Inhumacion
@@ -31,7 +31,7 @@ function Sidebar() {
             <Link className="fs-6" to="tablaExhumacion">
               Tabla de Exhumacion
             </Link>
-          </li>
+          </li>*/}
         </ul>
       </nav>
     </div>

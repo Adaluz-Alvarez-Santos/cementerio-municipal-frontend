@@ -10,8 +10,8 @@ import "../../App.css";
 const ExhumarInhumacion = () => {
   const { id } = useParams();
   const [inhumacion, setInhumacion] = useState(null);
-  const [familiares, setFamiliares] = useState([]); // Lista de familiares existentes
-  const [familiarSeleccionado, setFamiliarSeleccionado] = useState(""); // ID del familiar seleccionado
+  const [familiares, setFamiliares] = useState([]);
+  const [familiarSeleccionado, setFamiliarSeleccionado] = useState("");
   const [familiarNuevo, setFamiliarNuevo] = useState({
     CI: "",
     nombre: "",
@@ -42,7 +42,7 @@ const ExhumarInhumacion = () => {
   useEffect(() => {
     const loadFamiliares = async (persona_id) => {
       try {
-        const data = await fetchFamiliares(persona_id); // Obtén familiares usando persona_id
+        const data = await fetchFamiliares(persona_id);
         setFamiliares(data);
       } catch (error) {
         setError("Error al cargar los familiares");
@@ -50,7 +50,7 @@ const ExhumarInhumacion = () => {
     };
 
     if (inhumacion) {
-      loadFamiliares(inhumacion.persona_id); // Asegúrate de acceder al persona_id
+      loadFamiliares(inhumacion.persona_id);
     }
   }, [inhumacion]);
 
@@ -58,13 +58,11 @@ const ExhumarInhumacion = () => {
     e.preventDefault();
     let familiarData;
     if (familiarSeleccionado) {
-      // Buscar el familiar en la lista de familiares
       const familiarEncontrado = familiares.find(
         (f) => f.CI === familiarSeleccionado
       );
       familiarData = familiarEncontrado ? familiarEncontrado : {};
     } else {
-      // Si no se seleccionó, usa la información del nuevo familiar
       familiarData = {
         CI: familiarNuevo.CI,
         nombre: familiarNuevo.nombre,
@@ -81,6 +79,7 @@ const ExhumarInhumacion = () => {
       fecha_exhumacion: fechaExhumacion,
       motivo,
       familiar: familiarData,
+      espacio_id: inhumacion.espacio_id, // Agregar espacio_id aquí
     };
 
     try {
@@ -117,29 +116,19 @@ const ExhumarInhumacion = () => {
                 <span className="titulo-span">Detalles del Difunto</span>
                 <div className="mx-3">
                   <strong>CI: </strong>
-                  {inhumacion ? inhumacion.persona.CI : "No disponible"}
-                  <br></br>
+                  {inhumacion.persona?.CI || "No disponible"}
+                  <br />
                   <strong>Nombre y Apellidos: </strong>
-                  {inhumacion
-                    ? inhumacion.persona.nombre
-                    : "No disponible"}{" "}
-                  {inhumacion
-                    ? inhumacion.persona.apellido_paterno
-                    : "No disponible"}{" "}
-                  {inhumacion
-                    ? inhumacion.persona.apellido_materno
+                  {inhumacion.persona
+                    ? `${inhumacion.persona.nombre} ${inhumacion.persona.apellido_paterno} ${inhumacion.persona.apellido_materno}`
                     : "No disponible"}
-                  <br></br>
+                  <br />
                   <strong>Fecha de Nacimiento: </strong>
-                  {inhumacion
-                    ? inhumacion.persona.fecha_nacimiento
-                    : "No disponible"}
-                  <br></br>
+                  {inhumacion.persona?.fecha_nacimiento || "No disponible"}
+                  <br />
                   <strong>Fecha de Fallecimiento: </strong>
-                  {inhumacion
-                    ? inhumacion.persona.fecha_fallecimiento
-                    : "No disponible"}
-                  <br></br>
+                  {inhumacion.persona?.fecha_fallecimiento || "No disponible"}
+                  <br />
                 </div>
               </div>
               <div className="col-md-6">
@@ -151,14 +140,14 @@ const ExhumarInhumacion = () => {
                       <div key={familiar.CI}>
                         <strong>CI: </strong>
                         {familiar.CI}
-                        <br></br>
+                        <br />
                         <strong>Nombre y Apellidos: </strong>
                         {familiar.nombre} {familiar.apellido_materno}{" "}
                         {familiar.apellido_paterno}
-                        <br></br>
+                        <br />
                         <strong>Parentesco: </strong>
                         {familiar.parentesco}
-                        <br></br>
+                        <br />
                         <strong>Telf/Celular: </strong>
                         {familiar.celular}
                       </div>
@@ -202,16 +191,14 @@ const ExhumarInhumacion = () => {
               <div className="col-md-6 p-2 d-flex">
                 <label>Motivo de Exhumación: </label>
                 <textarea
-                className="fixed"
-                style={{width:"350px", height:"50px"}}
-                  type="text"
+                  className="fixed"
+                  style={{ width: "350px", height: "50px" }}
                   value={motivo}
                   onChange={(e) => setMotivo(e.target.value)}
                   required
                 />
               </div>
             </div>
-            {/* Elegir familiar existente o registrar uno nuevo */}
 
             <div className="mx-3">
               <label>Seleccionar Familiar:</label>
@@ -251,10 +238,7 @@ const ExhumarInhumacion = () => {
                       type="text"
                       value={familiarNuevo.CI}
                       onChange={(e) =>
-                        setFamiliarNuevo({
-                          ...familiarNuevo,
-                          CI: e.target.value,
-                        })
+                        setFamiliarNuevo({ ...familiarNuevo, CI: e.target.value })
                       }
                       required
                     />
@@ -265,38 +249,29 @@ const ExhumarInhumacion = () => {
                       type="text"
                       value={familiarNuevo.nombre}
                       onChange={(e) =>
-                        setFamiliarNuevo({
-                          ...familiarNuevo,
-                          nombre: e.target.value,
-                        })
+                        setFamiliarNuevo({ ...familiarNuevo, nombre: e.target.value })
                       }
                       required
                     />
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 p-2">
                     <label>Apellido Paterno:</label>
                     <input
                       type="text"
                       value={familiarNuevo.apellido_paterno}
                       onChange={(e) =>
-                        setFamiliarNuevo({
-                          ...familiarNuevo,
-                          apellido_paterno: e.target.value,
-                        })
+                        setFamiliarNuevo({ ...familiarNuevo, apellido_paterno: e.target.value })
                       }
                       required
                     />
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 p-2">
                     <label>Apellido Materno:</label>
                     <input
                       type="text"
                       value={familiarNuevo.apellido_materno}
                       onChange={(e) =>
-                        setFamiliarNuevo({
-                          ...familiarNuevo,
-                          apellido_materno: e.target.value,
-                        })
+                        setFamiliarNuevo({ ...familiarNuevo, apellido_materno: e.target.value })
                       }
                       required
                     />
@@ -307,10 +282,7 @@ const ExhumarInhumacion = () => {
                       type="text"
                       value={familiarNuevo.parentesco}
                       onChange={(e) =>
-                        setFamiliarNuevo({
-                          ...familiarNuevo,
-                          parentesco: e.target.value,
-                        })
+                        setFamiliarNuevo({ ...familiarNuevo, parentesco: e.target.value })
                       }
                       required
                     />
@@ -321,10 +293,7 @@ const ExhumarInhumacion = () => {
                       type="text"
                       value={familiarNuevo.celular}
                       onChange={(e) =>
-                        setFamiliarNuevo({
-                          ...familiarNuevo,
-                          celular: e.target.value,
-                        })
+                        setFamiliarNuevo({ ...familiarNuevo, celular: e.target.value })
                       }
                       required
                     />
@@ -332,14 +301,14 @@ const ExhumarInhumacion = () => {
                 </div>
               </div>
             )}
-            <div className="p-3">
-              <button className="btn btn-primary boton-form" type="submit">Registrar Exhumación</button>
+
+            <div className="mx-3">
+              <button type="submit" className="btn btn-primary">Registrar Exhumación</button>
             </div>
-            
           </form>
         </div>
       ) : (
-        <p>Cargando información de inhumación...</p>
+        <p>Cargando detalles de la inhumación...</p>
       )}
     </div>
   );
